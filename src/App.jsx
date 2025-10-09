@@ -229,7 +229,12 @@ const ShareIcon = () => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
-      d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z"
+      d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"
+    />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M12 12v4.5M9.75 14.25 12 12l2.25 2.25"
     />
   </svg>
 );
@@ -581,8 +586,8 @@ export default function App() {
                   </a>
                 )}
 
-                {/* Share Button with Popup */}
-                {activeSection !== "share" && (
+                {/* Connect Button with Popup */}
+                {activeSection !== "connect" && (
                   <div className="relative">
                     <button
                       onClick={() => setShowSocial(!showSocial)}
@@ -592,7 +597,7 @@ export default function App() {
                         <ShareIcon />
                       </div>
                       <span className="text-[10px] font-medium uppercase tracking-wider text-blue-400 transition-colors group-hover:text-orange-400">
-                        Share
+                        Connect
                       </span>
                     </button>
 
