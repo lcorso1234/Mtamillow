@@ -255,6 +255,39 @@ export default function App() {
   const [showSocial, setShowSocial] = useState(false);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [currentPodcastIndex, setCurrentPodcastIndex] = useState(0);
+  const [activeSection, setActiveSection] = useState("");
+
+  // Track active section on scroll
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const sections = [
+        "meet-maureen",
+        "approach",
+        "services",
+        "video",
+        "podcast",
+      ];
+      const scrollPosition = window.scrollY + window.innerHeight / 2;
+
+      for (const sectionId of sections) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (
+            scrollPosition >= offsetTop &&
+            scrollPosition < offsetTop + offsetHeight
+          ) {
+            setActiveSection(sectionId);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // Check initial position
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const socialLinks = [
     { name: "Twitter", url: "#", icon: "𝕏" },
@@ -302,7 +335,7 @@ export default function App() {
     currentPodcastIndex + itemsPerPage
   );
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-950 via-orange-950 to-blue-950 text-white">
+    <div className="min-h-screen bg-slate-800 text-white">
       <div className="mx-auto flex min-h-screen max-w-7xl flex-col gap-16 px-6 pb-20 pt-8 sm:px-8 lg:px-12">
         <main className="flex flex-col gap-20">
           {sections.map(({ id, eyebrow, title, description, featured }) => (
@@ -486,158 +519,182 @@ export default function App() {
 
         {/* Fixed Bottom Navigation */}
         <nav className="fixed bottom-[3px] left-1/2 -translate-x-1/2 z-50 w-[calc(100%-24px)] max-w-4xl">
-          <div className="rounded-full border-2 border-transparent bg-gradient-to-r from-blue-500 via-orange-500 to-blue-500 p-[2px] animate-[gradient_3s_ease_infinite] bg-[length:200%_200%] shadow-[0_0_40px_rgba(249,115,22,0.6)]">
-            <div className="rounded-full bg-black/95 backdrop-blur-xl px-6 py-3">
-              <div className="flex items-center justify-around gap-2">
-                <a
-                  href="linktree.html"
-                  className="group flex flex-col items-center gap-1 px-3 py-2 transition-all duration-300 hover:scale-110"
-                >
-                  <HomeIcon />
-                  <span className="text-[10px] font-medium uppercase tracking-wider text-blue-400 transition-colors group-hover:text-orange-400">
-                    Home
-                  </span>
-                </a>
-                <a
-                  href="#meet-maureen"
-                  className="group flex flex-col items-center gap-1 px-3 py-2 transition-all duration-300 hover:scale-110"
-                >
-                  <span className="text-lg">👤</span>
-                  <span className="text-[10px] font-medium uppercase tracking-wider text-blue-400 transition-colors group-hover:text-orange-400">
-                    About
-                  </span>
-                </a>
-                <a
-                  href="#services"
-                  className="group flex flex-col items-center gap-1 px-3 py-2 transition-all duration-300 hover:scale-110"
-                >
-                  <span className="text-lg">⚡</span>
-                  <span className="text-[10px] font-medium uppercase tracking-wider text-blue-400 transition-colors group-hover:text-orange-400">
-                    Services
-                  </span>
-                </a>
-                <a
-                  href="#video"
-                  className="group flex flex-col items-center gap-1 px-3 py-2 transition-all duration-300 hover:scale-110"
-                >
-                  <span className="text-lg">▶️</span>
-                  <span className="text-[10px] font-medium uppercase tracking-wider text-blue-400 transition-colors group-hover:text-orange-400">
-                    Videos
-                  </span>
-                </a>
-                <a
-                  href="#podcast"
-                  className="group flex flex-col items-center gap-1 px-3 py-2 transition-all duration-300 hover:scale-110"
-                >
-                  <span className="text-lg">🎙️</span>
-                  <span className="text-[10px] font-medium uppercase tracking-wider text-blue-400 transition-colors group-hover:text-orange-400">
-                    Podcast
-                  </span>
-                </a>
+          <div className="rounded-[18px] border-2 border-orange-500 bg-slate-700/40 backdrop-blur-xl shadow-lg">
+            <div className="px-4 py-2">
+              <div className="flex items-center justify-around gap-1">
+                {activeSection !== "home" && (
+                  <a
+                    href="linktree.html"
+                    className="group flex flex-col items-center gap-0.5 px-1.5 py-1.5 transition-all duration-300 hover:scale-110"
+                  >
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-orange-500 shadow-lg transition-transform group-hover:scale-105">
+                      <HomeIcon />
+                    </div>
+                    <span className="text-[10px] font-medium uppercase tracking-wider text-blue-400 transition-colors group-hover:text-orange-400">
+                      Home
+                    </span>
+                  </a>
+                )}
+                {activeSection !== "meet-maureen" &&
+                  activeSection !== "approach" && (
+                    <a
+                      href="#meet-maureen"
+                      className="group flex flex-col items-center gap-0.5 px-1.5 py-1.5 transition-all duration-300 hover:scale-110"
+                    >
+                      <span className="text-lg">👤</span>
+                      <span className="text-[10px] font-medium uppercase tracking-wider text-blue-400 transition-colors group-hover:text-orange-400">
+                        About
+                      </span>
+                    </a>
+                  )}
+                {activeSection !== "services" && (
+                  <a
+                    href="#services"
+                    className="group flex flex-col items-center gap-0.5 px-1.5 py-1.5 transition-all duration-300 hover:scale-110"
+                  >
+                    <span className="text-lg">⚡</span>
+                    <span className="text-[10px] font-medium uppercase tracking-wider text-blue-400 transition-colors group-hover:text-orange-400">
+                      Services
+                    </span>
+                  </a>
+                )}
+                {activeSection !== "video" && (
+                  <a
+                    href="#video"
+                    className="group flex flex-col items-center gap-0.5 px-1.5 py-1.5 transition-all duration-300 hover:scale-110"
+                  >
+                    <span className="text-lg">▶️</span>
+                    <span className="text-[10px] font-medium uppercase tracking-wider text-blue-400 transition-colors group-hover:text-orange-400">
+                      Videos
+                    </span>
+                  </a>
+                )}
+                {activeSection !== "podcast" && (
+                  <a
+                    href="#podcast"
+                    className="group flex flex-col items-center gap-0.5 px-1.5 py-1.5 transition-all duration-300 hover:scale-110"
+                  >
+                    <span className="text-lg">🎙️</span>
+                    <span className="text-[10px] font-medium uppercase tracking-wider text-blue-400 transition-colors group-hover:text-orange-400">
+                      Podcast
+                    </span>
+                  </a>
+                )}
 
                 {/* Share Button with Popup */}
-                <div className="relative">
-                  <button
-                    onClick={() => setShowSocial(!showSocial)}
-                    className="group flex flex-col items-center gap-1 px-3 py-2 transition-all duration-300 hover:scale-110"
-                  >
-                    <ShareIcon />
-                    <span className="text-[10px] font-medium uppercase tracking-wider text-blue-400 transition-colors group-hover:text-orange-400">
-                      Share
-                    </span>
-                  </button>
+                {activeSection !== "share" && (
+                  <div className="relative">
+                    <button
+                      onClick={() => setShowSocial(!showSocial)}
+                      className="group flex flex-col items-center gap-0.5 px-1.5 py-1.5 transition-all duration-300 hover:scale-110"
+                    >
+                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-orange-500 shadow-lg transition-transform group-hover:scale-105">
+                        <ShareIcon />
+                      </div>
+                      <span className="text-[10px] font-medium uppercase tracking-wider text-blue-400 transition-colors group-hover:text-orange-400">
+                        Share
+                      </span>
+                    </button>
 
-                  {showSocial && (
-                    <div className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 w-64">
-                      <div className="rounded-lg border-2 border-orange-500/50 bg-black/95 backdrop-blur-xl p-4 shadow-[0_0_30px_rgba(249,115,22,0.4)]">
-                        {/* Contact Icons - Stand Out */}
-                        <div className="mb-4 pb-4 border-b border-orange-500/30">
-                          <p className="text-xs uppercase tracking-wider text-orange-400 mb-3 font-bold">
-                            Get In Touch
-                          </p>
-                          <div className="flex gap-2">
-                            <a
-                              href="tel:+1234567890"
-                              className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-3 text-sm font-bold text-white transition hover:scale-105 shadow-[0_0_15px_rgba(59,130,246,0.5)]"
-                            >
-                              <span className="text-lg">📞</span>
-                              <span>Call</span>
-                            </a>
-                            <a
-                              href="mailto:contact@example.com"
-                              className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-3 text-sm font-bold text-white transition hover:scale-105 shadow-[0_0_15px_rgba(249,115,22,0.5)]"
-                            >
-                              <span className="text-lg">✉️</span>
-                              <span>Email</span>
-                            </a>
-                          </div>
-                        </div>
-
-                        {/* Social Media Icons */}
-                        <div>
-                          <p className="text-xs uppercase tracking-wider text-blue-400 mb-2 font-bold">
-                            Follow Us
-                          </p>
-                          <div className="grid grid-cols-2 gap-2">
-                            {socialLinks.map(({ name, icon }) => (
+                    {showSocial && (
+                      <div className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 w-64">
+                        <div className="rounded-lg border-2 border-orange-500/50 bg-black/95 backdrop-blur-xl p-4 shadow-[0_0_30px_rgba(249,115,22,0.4)]">
+                          {/* Contact Icons - Stand Out */}
+                          <div className="mb-4 pb-4 border-b border-orange-500/30">
+                            <p className="text-xs uppercase tracking-wider text-orange-400 mb-3 font-bold">
+                              Get In Touch
+                            </p>
+                            <div className="flex gap-2">
                               <a
-                                key={name}
-                                href="#"
-                                className="flex items-center gap-2 rounded-lg border border-blue-500/30 bg-gradient-to-br from-blue-500/10 to-transparent px-3 py-2 text-xs font-medium text-blue-300 transition hover:border-orange-500/50 hover:from-orange-500/10 hover:text-orange-400"
+                                href="tel:+1234567890"
+                                className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-3 text-sm font-bold text-white transition hover:scale-105 shadow-[0_0_15px_rgba(59,130,246,0.5)]"
                               >
-                                <span className="text-base">{icon}</span>
-                                <span>{name}</span>
+                                <span className="text-lg">📞</span>
+                                <span>Call</span>
                               </a>
-                            ))}
+                              <a
+                                href="mailto:contact@example.com"
+                                className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-3 text-sm font-bold text-white transition hover:scale-105 shadow-[0_0_15px_rgba(249,115,22,0.5)]"
+                              >
+                                <span className="text-lg">✉️</span>
+                                <span>Email</span>
+                              </a>
+                            </div>
+                          </div>
+
+                          {/* Social Media Icons */}
+                          <div>
+                            <p className="text-xs uppercase tracking-wider text-blue-400 mb-2 font-bold">
+                              Follow Us
+                            </p>
+                            <div className="grid grid-cols-2 gap-2">
+                              {socialLinks.map(({ name, icon }) => (
+                                <a
+                                  key={name}
+                                  href="#"
+                                  className="flex items-center gap-2 rounded-lg border border-blue-500/30 bg-gradient-to-br from-blue-500/10 to-transparent px-3 py-2 text-xs font-medium text-blue-300 transition hover:border-orange-500/50 hover:from-orange-500/10 hover:text-orange-400"
+                                >
+                                  <span className="text-base">{icon}</span>
+                                  <span>{name}</span>
+                                </a>
+                              ))}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  )}
-                </div>
+                    )}
+                  </div>
+                )}
 
                 {/* Bookmark Button */}
-                <button
-                  onClick={() => {
-                    // Add to bookmarks functionality
-                    if (window.sidebar && window.sidebar.addPanel) {
-                      window.sidebar.addPanel(
-                        document.title,
-                        window.location.href,
-                        ""
-                      );
-                    } else if (
-                      window.external &&
-                      "AddFavorite" in window.external
-                    ) {
-                      window.external.AddFavorite(
-                        window.location.href,
-                        document.title
-                      );
-                    } else {
-                      alert(
-                        "Press " +
-                          (navigator.userAgent.toLowerCase().indexOf("mac") !=
-                          -1
-                            ? "Cmd"
-                            : "Ctrl") +
-                          "+D to bookmark this page."
-                      );
-                    }
-                  }}
-                  className="group flex flex-col items-center gap-1 px-3 py-2 transition-all duration-300 hover:scale-110"
-                >
-                  <BookmarkIcon />
-                  <span className="text-[10px] font-medium uppercase tracking-wider text-blue-400 transition-colors group-hover:text-orange-400">
-                    Save
-                  </span>
-                </button>
+                {activeSection !== "save" && (
+                  <button
+                    onClick={() => {
+                      // Add to bookmarks functionality
+                      if (window.sidebar && window.sidebar.addPanel) {
+                        window.sidebar.addPanel(
+                          document.title,
+                          window.location.href,
+                          ""
+                        );
+                      } else if (
+                        window.external &&
+                        "AddFavorite" in window.external
+                      ) {
+                        window.external.AddFavorite(
+                          window.location.href,
+                          document.title
+                        );
+                      } else {
+                        alert(
+                          "Press " +
+                            (navigator.userAgent.toLowerCase().indexOf("mac") !=
+                            -1
+                              ? "Cmd"
+                              : "Ctrl") +
+                            "+D to bookmark this page."
+                        );
+                      }
+                    }}
+                    className="group flex flex-col items-center gap-0.5 px-1.5 py-1.5 transition-all duration-300 hover:scale-110"
+                  >
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-orange-500 shadow-lg transition-transform group-hover:scale-105">
+                      <BookmarkIcon />
+                    </div>
+                    <span className="text-[10px] font-medium uppercase tracking-wider text-blue-400 transition-colors group-hover:text-orange-400">
+                      Save
+                    </span>
+                  </button>
+                )}
               </div>
             </div>
           </div>
         </nav>
 
-        <footer className="rounded-lg border-2 border-transparent bg-gradient-to-r from-blue-500 via-orange-500 to-blue-500 p-[2px] animate-[gradient_3s_ease_infinite] bg-[length:200%_200%] mb-20">
+        <footer
+          id="footer"
+          className="rounded-lg border-2 border-transparent bg-gradient-to-r from-blue-500 via-orange-500 to-blue-500 p-[2px] animate-[gradient_3s_ease_infinite] bg-[length:200%_200%] mb-20"
+        >
           <div className="rounded-lg bg-black/90 p-8 backdrop-blur">
             <div className="mb-6 text-center">
               <h3 className="mb-2 text-3xl font-bold bg-gradient-to-r from-blue-400 via-orange-400 to-blue-400 bg-clip-text text-transparent animate-[gradient_3s_ease_infinite] bg-[length:200%_200%]">
