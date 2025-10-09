@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Link from "next/link";
 
 const navButton =
   "px-4 py-2 text-xs font-medium uppercase tracking-[0.25em] text-blue-300 transition hover:text-orange-400";
@@ -528,8 +529,8 @@ export default function App() {
             <div className="px-4 py-2">
               <div className="flex items-center justify-around gap-1">
                 {activeSection !== "home" && (
-                  <a
-                    href="linktree.html"
+                  <Link
+                    href="/linktree"
                     className="group flex flex-col items-center gap-0.5 px-1.5 py-1.5 transition-all duration-300 hover:scale-110"
                   >
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-orange-500 shadow-lg transition-transform group-hover:scale-105">
@@ -538,7 +539,7 @@ export default function App() {
                     <span className="text-[10px] font-medium uppercase tracking-wider text-blue-400 transition-colors group-hover:text-orange-400">
                       Home
                     </span>
-                  </a>
+                  </Link>
                 )}
                 {activeSection !== "meet-maureen" &&
                   activeSection !== "approach" && (
@@ -704,7 +705,73 @@ export default function App() {
           className="rounded-lg border-2 border-transparent bg-gradient-to-r from-blue-500 via-orange-500 to-blue-500 p-[2px] animate-[gradient_3s_ease_infinite] bg-[length:200%_200%] mb-20"
         >
           <div className="rounded-lg bg-black/90 p-8 backdrop-blur">
-            <div className="mb-6 text-center">
+            {/* Before & After Section */}
+            <div className="mb-8">
+              <div className="mb-6 text-center">
+                <h3 className="mb-2 text-2xl font-bold bg-gradient-to-r from-blue-400 via-orange-400 to-blue-400 bg-clip-text text-transparent">
+                  The Transformation
+                </h3>
+              </div>
+
+              <div className="grid gap-6 md:grid-cols-2 max-w-5xl mx-auto">
+                {/* BEFORE */}
+                <div className="rounded-lg bg-gradient-to-br from-slate-700 to-slate-800 p-6 border border-slate-600">
+                  <div className="text-center mb-4">
+                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-yellow-400 mb-3">
+                      <span className="text-4xl">😞</span>
+                    </div>
+                    <h4 className="text-xl font-bold text-white uppercase tracking-wider">
+                      Before
+                    </h4>
+                  </div>
+                  <ul className="space-y-3 text-sm text-slate-300">
+                    <li className="flex items-start gap-2">
+                      <span className="text-orange-400 mt-1">•</span>
+                      <span>
+                        You have to hide who you are around the people closest
+                        to you, constantly walking on egg shells.
+                      </span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-orange-400 mt-1">•</span>
+                      <span>
+                        You're dealing with negativity and feeling uncomfortable
+                        in your own skin.
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+
+                {/* NOW / AFTER */}
+                <div className="rounded-lg bg-gradient-to-br from-slate-700 to-slate-800 p-6 border border-blue-500/50 shadow-[0_0_30px_rgba(59,130,246,0.3)]">
+                  <div className="text-center mb-4">
+                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-yellow-400 mb-3">
+                      <span className="text-4xl">😊</span>
+                    </div>
+                    <h4 className="text-xl font-bold text-white uppercase tracking-wider">
+                      Now
+                    </h4>
+                  </div>
+                  <ul className="space-y-3 text-sm text-slate-300">
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-400 mt-1">•</span>
+                      <span>You can now be yourself</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-400 mt-1">•</span>
+                      <span>
+                        You are spreading acceptance and positivity in our
+                        environment that creates a ripple effect on the whole
+                        world.
+                      </span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Subscription Section */}
+            <div className="mb-6 text-center border-t border-slate-800 pt-8">
               <h3 className="mb-2 text-3xl font-bold bg-gradient-to-r from-blue-400 via-orange-400 to-blue-400 bg-clip-text text-transparent animate-[gradient_3s_ease_infinite] bg-[length:200%_200%]">
                 Stay Connected
               </h3>
