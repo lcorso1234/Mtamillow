@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function LinkTree() {
   return (
     <div className="min-h-screen bg-slate-800 text-white">
@@ -20,7 +22,7 @@ export default function LinkTree() {
         </div>
 
         <div className="mb-8">
-          <a
+          <Link
             href="/"
             className="group block rounded-lg border-2 border-transparent bg-gradient-to-r from-blue-500 via-orange-500 to-blue-500 p-[2px] animate-gradient shadow-[0_0_30px_rgba(249,115,22,0.5)] transition hover:shadow-[0_0_40px_rgba(249,115,22,0.8)]"
           >
@@ -40,11 +42,11 @@ export default function LinkTree() {
                 →
               </span>
             </div>
-          </a>
+          </Link>
         </div>
 
         <div className="space-y-4">
-          <a
+          <Link
             href="/#services"
             className="group block rounded-lg border border-blue-500/30 bg-gradient-to-br from-blue-500/10 to-transparent p-4 backdrop-blur transition hover:border-blue-500/60 hover:from-blue-500/20"
           >
@@ -64,7 +66,7 @@ export default function LinkTree() {
                 →
               </span>
             </div>
-          </a>
+          </Link>
           {/* Additional links omitted for brevity, kept similar to original */}
         </div>
 
