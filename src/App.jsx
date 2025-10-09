@@ -636,7 +636,10 @@ export default function App() {
                               {socialLinks.map(({ name, icon }) => (
                                 <a
                                   key={name}
-                                  href="#"
+                                  href={"javascript:void(0)"}
+                                  role="button"
+                                  aria-label={`${name} (not linked)`}
+                                  onClick={(e) => e.preventDefault()}
                                   className="flex items-center gap-2 rounded-lg border border-blue-500/30 bg-gradient-to-br from-blue-500/10 to-transparent px-3 py-2 text-xs font-medium text-blue-300 transition hover:border-orange-500/50 hover:from-orange-500/10 hover:text-orange-400"
                                 >
                                   <span className="text-base">{icon}</span>
