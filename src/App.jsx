@@ -93,70 +93,8 @@ const podcastEpisodes = [
 
 const sections = [
   {
-    id: "meet-maureen",
-    eyebrow: "01",
-    title: "Meet Maureen",
-    description:
-      "Maureen Tamillow, LCSW, coaches high-achieving women and teens who are done with burnout masquerading as success. She blends razor-sharp clinical chops with the fearless energy of a creative director.",
-    featured: (
-      <div className="grid gap-4 text-sm sm:grid-cols-3">
-        {[
-          "15+ years translating neuroscience into daily rituals",
-          "Certified in EMDR, CBT, and experiential family systems",
-          "Sessions fueled by humor, movement, and mission resets",
-        ].map((item) => (
-          <div
-            key={item}
-            className="rounded-lg border-l-4 border-orange-500 bg-gradient-to-br from-orange-500/10 to-blue-500/10 px-5 py-5 backdrop-blur-sm"
-          >
-            <p className="text-slate-300">{item}</p>
-          </div>
-        ))}
-      </div>
-    ),
-  },
-  {
-    id: "approach",
-    eyebrow: "02",
-    title: "Methodology",
-    description:
-      "Care plans fuse biometric awareness, nervous system recalibration, and creative experimentation. Every move is intentional, trackable, and tailored to your ambition.",
-    featured: (
-      <ul className="space-y-4 text-sm">
-        {[
-          {
-            label: "Control Room Mapping",
-            detail:
-              "Audits the thoughts, triggers, and rituals driving your current operating system.",
-          },
-          {
-            label: "Somatic Sprints",
-            detail:
-              "Micro-practices that discharge stress and rebuild baseline calm in minutes.",
-          },
-          {
-            label: "Impact Loops",
-            detail:
-              "Weekly experiments that compound wins without draining your energy reserves.",
-          },
-        ].map(({ label, detail }) => (
-          <li
-            key={label}
-            className="flex items-start gap-4 rounded-lg border-l-4 border-blue-500 bg-gradient-to-br from-blue-500/10 to-orange-500/10 px-6 py-5 backdrop-blur-sm"
-          >
-            <span className="mt-0.5 text-2xl font-bold text-orange-500">+</span>
-            <div>
-              <p className="font-semibold text-blue-400">{label}</p>
-              <p className="mt-1 text-slate-300">{detail}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
-    ),
-  },
-  {
     id: "services",
-    eyebrow: "03",
+    eyebrow: "02",
     title: "Services",
     description:
       "Whether you thrive solo, with your crew, or in the boardroom, Maureen engineers immersive containers that deliver clarity fast.",
@@ -344,6 +282,94 @@ export default function App() {
     <div className="min-h-screen bg-slate-800 text-white">
       <div className="mx-auto flex min-h-screen max-w-7xl flex-col gap-16 px-6 pb-20 pt-8 sm:px-8 lg:px-12">
         <main className="flex flex-col gap-20">
+          {/* Combined Top Section - Two Columns */}
+          <section
+            id="meet-maureen"
+            className="rounded-lg border-2 border-gradient-to-r from-blue-500 via-orange-500 to-blue-500 border-opacity-50 bg-black/60 p-6 backdrop-blur shadow-[0_0_50px_rgba(249,115,22,0.15)]"
+          >
+            <div className="mb-4 flex items-baseline gap-4">
+              <span className="text-xs font-bold text-orange-500">01</span>
+              <div className="h-px flex-1 bg-gradient-to-r from-blue-500 via-orange-500 to-blue-500 opacity-40"></div>
+            </div>
+
+            <div className="grid gap-6 lg:grid-cols-2">
+              {/* Left Column - Meet Maureen */}
+              <div className="rounded-lg border-2 border-blue-500/50 bg-gradient-to-br from-blue-500/5 to-transparent p-6 backdrop-blur-sm">
+                <h2 className="mb-3 bg-gradient-to-r from-blue-400 via-orange-400 to-blue-400 bg-clip-text text-3xl font-bold tracking-tight text-transparent sm:text-4xl">
+                  Meet Maureen
+                </h2>
+                <p className="mb-6 text-base text-slate-300">
+                  Maureen Tamillow, LCSW, coaches high-achieving women and teens
+                  who are done with burnout masquerading as success. She blends
+                  razor-sharp clinical chops with the fearless energy of a
+                  creative director.
+                </p>
+                <div className="space-y-3 text-sm">
+                  {[
+                    "15+ years translating neuroscience into daily rituals",
+                    "Certified in EMDR, CBT, and experiential family systems",
+                    "Sessions fueled by humor, movement, and mission resets",
+                  ].map((item) => (
+                    <div
+                      key={item}
+                      className="rounded-lg border-l-4 border-orange-500 bg-gradient-to-br from-orange-500/10 to-blue-500/10 px-5 py-4 backdrop-blur-sm"
+                    >
+                      <p className="text-slate-300">{item}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right Column - Methodology */}
+              <div
+                id="approach"
+                className="rounded-lg border-2 border-orange-500/50 bg-gradient-to-br from-orange-500/5 to-transparent p-6 backdrop-blur-sm"
+              >
+                <h2 className="mb-3 bg-gradient-to-r from-blue-400 via-orange-400 to-blue-400 bg-clip-text text-3xl font-bold tracking-tight text-transparent sm:text-4xl">
+                  Methodology
+                </h2>
+                <p className="mb-6 text-base text-slate-300">
+                  Care plans fuse biometric awareness, nervous system
+                  recalibration, and creative experimentation. Every move is
+                  intentional, trackable, and tailored to your ambition.
+                </p>
+                <ul className="space-y-3 text-sm">
+                  {[
+                    {
+                      label: "Control Room Mapping",
+                      detail:
+                        "Audits the thoughts, triggers, and rituals driving your current operating system.",
+                    },
+                    {
+                      label: "Somatic Sprints",
+                      detail:
+                        "Micro-practices that discharge stress and rebuild baseline calm in minutes.",
+                    },
+                    {
+                      label: "Impact Loops",
+                      detail:
+                        "Weekly experiments that compound wins without draining your energy reserves.",
+                    },
+                  ].map(({ label, detail }) => (
+                    <li
+                      key={label}
+                      className="flex items-start gap-3 rounded-lg border-l-4 border-blue-500 bg-gradient-to-br from-blue-500/10 to-orange-500/10 px-5 py-4 backdrop-blur-sm"
+                    >
+                      <span className="mt-0.5 text-xl font-bold text-orange-500">
+                        +
+                      </span>
+                      <div>
+                        <p className="font-semibold text-blue-400">{label}</p>
+                        <p className="mt-1 text-slate-300">{detail}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          {/* Remaining Sections */}
           {sections.map(({ id, eyebrow, title, description, featured }) => (
             <section
               key={id}
