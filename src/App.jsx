@@ -1,143 +1,118 @@
-import React, { useState } from "react";
-import Link from "next/link";
+import React, { useEffect, useState } from "react";
 
-const navButton =
-  "px-4 py-2 text-xs font-medium uppercase tracking-[0.25em] text-blue-300 transition hover:text-orange-400";
-
-const iconButton =
-  "flex h-9 w-9 items-center justify-center text-blue-300 transition hover:text-orange-400";
-
-const videoContent = [
-  {
-    title: "Anxiety Override Protocol",
-    duration: "6:12",
-    category: "Stress Management",
-  },
-  {
-    title: "Burnout To Breakthrough",
-    duration: "8:40",
-    category: "Leadership",
-  },
-  { title: "Teen Reset Rituals", duration: "5:03", category: "Youth" },
-  {
-    title: "Boardroom Breathing Stack",
-    duration: "4:48",
-    category: "Leadership",
-  },
-  {
-    title: "Somatic Confidence Drill",
-    duration: "7:32",
-    category: "Personal Growth",
-  },
-  {
-    title: "Creative Recovery Sprints",
-    duration: "9:21",
-    category: "Creativity",
-  },
-  { title: "Micro-Rituals For Parents", duration: "6:55", category: "Family" },
-  {
-    title: "Momentum Morning Flow",
-    duration: "5:44",
-    category: "Daily Practices",
-  },
-  {
-    title: "Nervous System Reset",
-    duration: "8:15",
-    category: "Stress Management",
-  },
-  { title: "Power Pause Technique", duration: "4:22", category: "Quick Tools" },
+const navLinks = [
+  { label: "Home", target: "hero" },
+  { label: "About", target: "about" },
+  { label: "Videos", target: "video" },
+  { label: "Contact", target: "contact" },
+  { label: "Transformation", target: "transformation" },
 ];
 
-const podcastEpisodes = [
+const heroHighlights = [
+  "Individuals and couples ages 11 through senior adults",
+  "Consultations for parents of children ages 3–10 (anxiety, depression, IEPs, 504 plans)",
+];
+
+const videoLibrary = [
   {
-    title: "Episode 42 - Reimagining Self-Care As Self-Celebration",
-    guest: "Featured",
-    duration: "45:12",
+    title: "Understanding Attachment Theory",
+    duration: "8:45",
+    category: "Foundational",
   },
   {
-    title: "Episode 41 - Dr. Lena Carr on Somatic Strategies",
-    guest: "Interview",
-    duration: "52:30",
+    title: "Cognitive Behavioral Approaches",
+    duration: "10:20",
+    category: "Therapeutic Models",
   },
   {
-    title: "Episode 40 - Priya Patel on Teen Leadership",
-    guest: "Interview",
-    duration: "48:15",
+    title: "Psychodynamic Perspectives",
+    duration: "9:15",
+    category: "Therapeutic Models",
   },
   {
-    title: "Episode 39 - Creative Wellness Architecture",
-    guest: "Interview",
-    duration: "51:45",
+    title: "Family Systems Theory",
+    duration: "7:30",
+    category: "Foundational",
   },
   {
-    title: "Episode 38 - Breaking the Burnout Cycle",
-    guest: "Solo",
-    duration: "38:20",
+    title: "Trauma-Informed Care Principles",
+    duration: "11:05",
+    category: "Clinical Practice",
   },
   {
-    title: "Episode 37 - Family Communication Protocols",
-    guest: "Interview",
-    duration: "49:10",
+    title: "Developmental Psychology Across Lifespan",
+    duration: "12:40",
+    category: "Foundational",
   },
   {
-    title: "Episode 36 - The Science of Calm",
-    guest: "Solo",
-    duration: "42:30",
+    title: "Neuroplasticity and Change",
+    duration: "8:55",
+    category: "Clinical Practice",
   },
   {
-    title: "Episode 35 - Cultural Transformation in Teams",
-    guest: "Interview",
-    duration: "55:18",
+    title: "Emotion Regulation Theories",
+    duration: "9:30",
+    category: "Clinical Practice",
+  },
+  {
+    title: "Social Cognitive Theory",
+    duration: "7:45",
+    category: "Therapeutic Models",
+  },
+  {
+    title: "Mindfulness-Based Interventions",
+    duration: "10:15",
+    category: "Therapeutic Models",
   },
 ];
 
-const sections = [
+const videosPerPage = 3;
+
+const transformationBefore = [
+  "Struggling with anxiety, depression, or relationship challenges without clear direction.",
+  "Feeling disconnected from yourself and unsure how to process difficult emotions.",
+  "Navigating life transitions, identity questions, or family dynamics alone.",
+];
+
+const transformationAfter = [
+  "Developing practical coping strategies and deeper self-awareness through evidence-based therapy.",
+  "Building healthier relationships and communication patterns with support and guidance.",
+  "Working collaboratively with a therapist who provides clinical expertise and compassionate care.",
+];
+
+const contactInfo = {
+  phone: "(708) 261-3028",
+  email: "mtamillowtherapycom@gmail.com",
+  address: "15 Salt Creek, Suite 401, Hinsdale, IL 60521",
+  vitaeUrl:
+    "https://mtamillowtherapy.com/wp-content/uploads/2024/12/2025-Curriculum-VITAE.pdf",
+  linkedin: "https://www.linkedin.com/in/maureen-tamillow-0ba45738",
+};
+
+const socialLinks = [
+  { name: "LinkedIn", icon: "in", href: contactInfo.linkedin },
+  { name: "Email", icon: "✉️", href: `mailto:${contactInfo.email}` },
   {
-    id: "services",
-    eyebrow: "02",
-    title: "Services",
-    description:
-      "Whether you thrive solo, with your crew, or in the boardroom, Maureen engineers immersive containers that deliver clarity fast.",
-    featured: (
-      <div className="grid gap-4 sm:grid-cols-2">
-        {[
-          {
-            label: "Vanguard 1:1",
-            detail:
-              "High-voltage virtual intensives pairing live therapy with tactical playbooks.",
-            color: "from-blue-500/20 to-orange-500/20 border-blue-500",
-          },
-          {
-            label: "Teen Riot Lab",
-            detail:
-              "Creative resilience coaching that swaps burnout for bravery.",
-            color: "from-orange-500/20 to-blue-500/20 border-orange-500",
-          },
-          {
-            label: "Family Reset Ops",
-            detail:
-              "Half-day immersion that rebuilds communication protocols and trust.",
-            color: "from-blue-600/20 to-orange-600/20 border-blue-600",
-          },
-          {
-            label: "Culture Recharge",
-            detail:
-              "Workplace labs to electrify team morale and mental fitness.",
-            color: "from-orange-600/20 to-blue-600/20 border-orange-600",
-          },
-        ].map(({ label, detail, color }) => (
-          <div
-            key={label}
-            className={`rounded-lg border-l-4 bg-gradient-to-br ${color} px-6 py-6 backdrop-blur-sm transition hover:scale-[1.02]`}
-          >
-            <p className="font-bold text-white">{label}</p>
-            <p className="mt-2 text-sm text-slate-300">{detail}</p>
-          </div>
-        ))}
-      </div>
-    ),
+    name: "Phone",
+    icon: "📞",
+    href: `tel:${contactInfo.phone.replace(/[^0-9]/g, "")}`,
   },
 ];
+
+const MenuIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    className="h-5 w-5"
+  >
+    <line x1="4" y1="6" x2="20" y2="6" strokeLinecap="round" />
+    <line x1="4" y1="12" x2="20" y2="12" strokeLinecap="round" />
+    <line x1="4" y1="18" x2="20" y2="18" strokeLinecap="round" />
+  </svg>
+);
 
 const BookmarkIcon = () => (
   <svg
@@ -151,7 +126,24 @@ const BookmarkIcon = () => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
-      d="M6.75 3.75h10.5a.75.75 0 0 1 .75.75v15l-6-3.75-6 3.75v-15a.75.75 0 0 1 .75-.75Z"
+      d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
+    />
+  </svg>
+);
+
+const LinkIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    className="h-5 w-5"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244"
     />
   </svg>
 );
@@ -168,690 +160,513 @@ const ShareIcon = () => (
     <path
       strokeLinecap="round"
       strokeLinejoin="round"
-      d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"
-    />
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M12 12v4.5M9.75 14.25 12 12l2.25 2.25"
-    />
-  </svg>
-);
-
-const HomeIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.8"
-    className="h-5 w-5"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
+      d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z"
     />
   </svg>
 );
 
 export default function App() {
-  const [showSocial, setShowSocial] = useState(false);
-  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const [currentPodcastIndex, setCurrentPodcastIndex] = useState(0);
-  const [activeSection, setActiveSection] = useState("");
+  const [showShare, setShowShare] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+  const [activeSection, setActiveSection] = useState("hero");
+  const [videoPage, setVideoPage] = useState(0);
 
-  // Track active section on scroll
-  React.useEffect(() => {
+  useEffect(() => {
+    const sectionIds = ["hero", "about", "video", "contact", "transformation"];
+
     const handleScroll = () => {
-      const sections = [
-        "meet-maureen",
-        "approach",
-        "services",
-        "video",
-        "podcast",
-      ];
-      const scrollPosition = window.scrollY + window.innerHeight / 2;
-
-      for (const sectionId of sections) {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          const { offsetTop, offsetHeight } = element;
-          if (
-            scrollPosition >= offsetTop &&
-            scrollPosition < offsetTop + offsetHeight
-          ) {
-            setActiveSection(sectionId);
-            break;
-          }
+      const midpoint = window.scrollY + window.innerHeight / 3;
+      let currentId = sectionIds[0];
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        const top = el.offsetTop;
+        const height = el.offsetHeight;
+        if (midpoint >= top && midpoint < top + height) {
+          currentId = id;
+          break;
         }
       }
+      setActiveSection(currentId);
     };
 
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Check initial position
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const socialLinks = [
-    { name: "Twitter", url: "#", icon: "𝕏" },
-    { name: "LinkedIn", url: "#", icon: "in" },
-    { name: "Instagram", url: "#", icon: "📷" },
-    { name: "Facebook", url: "#", icon: "f" },
-  ];
-
-  const itemsPerPage = 3;
-
-  const nextVideo = () => {
-    setCurrentVideoIndex((prev) =>
-      prev + itemsPerPage >= videoContent.length ? 0 : prev + itemsPerPage
-    );
+  const scrollToSection = (target) => {
+    setShowShare(false);
+    setShowMenu(false);
+    const element = document.getElementById(target);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   };
 
-  const prevVideo = () => {
-    setCurrentVideoIndex((prev) =>
-      prev - itemsPerPage < 0
-        ? Math.floor((videoContent.length - 1) / itemsPerPage) * itemsPerPage
-        : prev - itemsPerPage
-    );
+  const handleShare = async () => {
+    const shareData = {
+      title: "Maureen Tamillow Therapy",
+      text: "The therapy and coaching you need to feel like yourself again.",
+      url: window.location.href,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        // Fallback for desktop - copy to clipboard
+        await navigator.clipboard.writeText(window.location.href);
+        alert("Link copied to clipboard!");
+      }
+    } catch (err) {
+      if (err.name !== "AbortError") {
+        console.error("Error sharing:", err);
+      }
+    }
   };
 
-  const nextPodcast = () => {
-    setCurrentPodcastIndex((prev) =>
-      prev + itemsPerPage >= podcastEpisodes.length ? 0 : prev + itemsPerPage
-    );
+  const handleBookmark = () => {
+    if (window.sidebar && window.sidebar.addPanel) {
+      // Firefox
+      window.sidebar.addPanel(
+        "Maureen Tamillow Therapy",
+        window.location.href,
+        ""
+      );
+    } else if (window.external && "AddFavorite" in window.external) {
+      // IE
+      window.external.AddFavorite(
+        window.location.href,
+        "Maureen Tamillow Therapy"
+      );
+    } else {
+      // Modern browsers - show instruction
+      alert(
+        "To bookmark this page:\n\n" +
+          "• Press Ctrl+D (Windows/Linux) or Cmd+D (Mac)\n" +
+          "• Or use your browser's bookmark button"
+      );
+    }
   };
 
-  const prevPodcast = () => {
-    setCurrentPodcastIndex((prev) =>
-      prev - itemsPerPage < 0
-        ? Math.floor((podcastEpisodes.length - 1) / itemsPerPage) * itemsPerPage
-        : prev - itemsPerPage
-    );
-  };
-
-  const currentVideos = videoContent.slice(
-    currentVideoIndex,
-    currentVideoIndex + itemsPerPage
+  const totalVideoPages = Math.ceil(videoLibrary.length / videosPerPage);
+  const currentVideos = videoLibrary.slice(
+    videoPage * videosPerPage,
+    videoPage * videosPerPage + videosPerPage
   );
-  const currentPodcasts = podcastEpisodes.slice(
-    currentPodcastIndex,
-    currentPodcastIndex + itemsPerPage
-  );
+
+  const handleVideoNav = (direction) => {
+    setVideoPage((prev) => {
+      if (direction === "next") {
+        return (prev + 1) % totalVideoPages;
+      }
+      return (prev - 1 + totalVideoPages) % totalVideoPages;
+    });
+  };
+
   return (
-    <div className="min-h-screen bg-slate-800 text-white">
-      <div className="mx-auto flex min-h-screen max-w-7xl flex-col gap-16 px-6 pb-20 pt-8 sm:px-8 lg:px-12">
-        <main className="flex flex-col gap-20">
-          {/* Combined Top Section - Two Columns */}
-          <section
-            id="meet-maureen"
-            className="rounded-lg border-2 border-gradient-to-r from-blue-500 via-orange-500 to-blue-500 border-opacity-50 bg-black/60 p-6 backdrop-blur shadow-[0_0_50px_rgba(249,115,22,0.15)]"
-          >
-            <div className="mb-4 flex items-baseline gap-4">
-              <span className="text-xs font-bold text-orange-500">01</span>
-              <div className="h-px flex-1 bg-gradient-to-r from-blue-500 via-orange-500 to-blue-500 opacity-40"></div>
-            </div>
-
-            <div className="grid gap-6 lg:grid-cols-2">
-              {/* Left Column - Meet Maureen */}
-              <div className="rounded-lg border-2 border-blue-500/50 bg-gradient-to-br from-blue-500/5 to-transparent p-6 backdrop-blur-sm">
-                <h2 className="mb-3 bg-gradient-to-r from-blue-400 via-orange-400 to-blue-400 bg-clip-text text-3xl font-bold tracking-tight text-transparent sm:text-4xl">
-                  Meet Maureen
-                </h2>
-                <p className="mb-6 text-base text-slate-300">
-                  Maureen Tamillow, LCSW, coaches high-achieving women and teens
-                  who are done with burnout masquerading as success. She blends
-                  razor-sharp clinical chops with the fearless energy of a
-                  creative director.
-                </p>
-                <div className="space-y-3 text-sm">
-                  {[
-                    "15+ years translating neuroscience into daily rituals",
-                    "Certified in EMDR, CBT, and experiential family systems",
-                    "Sessions fueled by humor, movement, and mission resets",
-                  ].map((item) => (
-                    <div
-                      key={item}
-                      className="rounded-lg border-l-4 border-orange-500 bg-gradient-to-br from-orange-500/10 to-blue-500/10 px-5 py-4 backdrop-blur-sm"
-                    >
-                      <p className="text-slate-300">{item}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Right Column - Methodology */}
-              <div
-                id="approach"
-                className="rounded-lg border-2 border-orange-500/50 bg-gradient-to-br from-orange-500/5 to-transparent p-6 backdrop-blur-sm"
-              >
-                <h2 className="mb-3 bg-gradient-to-r from-blue-400 via-orange-400 to-blue-400 bg-clip-text text-3xl font-bold tracking-tight text-transparent sm:text-4xl">
-                  Methodology
-                </h2>
-                <p className="mb-6 text-base text-slate-300">
-                  Care plans fuse biometric awareness, nervous system
-                  recalibration, and creative experimentation. Every move is
-                  intentional, trackable, and tailored to your ambition.
-                </p>
-                <ul className="space-y-3 text-sm">
-                  {[
-                    {
-                      label: "Control Room Mapping",
-                      detail:
-                        "Audits the thoughts, triggers, and rituals driving your current operating system.",
-                    },
-                    {
-                      label: "Somatic Sprints",
-                      detail:
-                        "Micro-practices that discharge stress and rebuild baseline calm in minutes.",
-                    },
-                    {
-                      label: "Impact Loops",
-                      detail:
-                        "Weekly experiments that compound wins without draining your energy reserves.",
-                    },
-                  ].map(({ label, detail }) => (
-                    <li
-                      key={label}
-                      className="flex items-start gap-3 rounded-lg border-l-4 border-blue-500 bg-gradient-to-br from-blue-500/10 to-orange-500/10 px-5 py-4 backdrop-blur-sm"
-                    >
-                      <span className="mt-0.5 text-xl font-bold text-orange-500">
-                        +
-                      </span>
-                      <div>
-                        <p className="font-semibold text-blue-400">{label}</p>
-                        <p className="mt-1 text-slate-300">{detail}</p>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </section>
-
-          {/* Remaining Sections */}
-          {sections.map(({ id, eyebrow, title, description, featured }) => (
-            <section
-              key={id}
-              id={id}
-              className="rounded-lg border-2 border-gradient-to-r from-blue-500 via-orange-500 to-blue-500 border-opacity-50 bg-black/60 p-6 backdrop-blur shadow-[0_0_50px_rgba(249,115,22,0.15)]"
-            >
-              <div className="mb-4 flex items-baseline gap-4">
-                <span className="text-xs font-bold text-orange-500">
-                  {eyebrow}
-                </span>
-                <div className="h-px flex-1 bg-gradient-to-r from-blue-500 via-orange-500 to-blue-500 opacity-40"></div>
-              </div>
-              <div className="mb-4 max-w-3xl">
-                <h2 className="mb-3 bg-gradient-to-r from-blue-400 via-orange-400 to-blue-400 bg-clip-text text-3xl font-bold tracking-tight text-transparent sm:text-4xl">
-                  {title}
-                </h2>
-                <p className="text-base text-slate-300">{description}</p>
-              </div>
-              <div className="mt-6">{featured}</div>
-            </section>
-          ))}
-
-          {/* Visual Separator */}
-          <div className="flex items-center justify-center gap-4 py-8">
-            <div className="h-px w-full max-w-xs bg-gradient-to-r from-transparent via-orange-500 to-transparent opacity-50"></div>
-            <div className="flex gap-2">
-              <div className="h-2 w-2 rounded-full bg-blue-500"></div>
-              <div className="h-2 w-2 rounded-full bg-orange-500"></div>
-              <div className="h-2 w-2 rounded-full bg-blue-500"></div>
-            </div>
-            <div className="h-px w-full max-w-xs bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-50"></div>
-          </div>
-
-          {/* Video Section with 3-Column Layout */}
-          <section
-            id="video"
-            className="rounded-lg border-2 border-blue-500 bg-black/70 p-6 backdrop-blur shadow-[0_0_60px_rgba(59,130,246,0.3)]"
-          >
-            <div className="mb-4 flex items-baseline gap-4">
-              <span className="text-xs font-bold text-blue-500">VIDEO</span>
-              <div className="h-px flex-1 bg-gradient-to-r from-blue-500 to-transparent opacity-50"></div>
-            </div>
-            <div className="mb-6 flex items-end justify-between">
-              <div>
-                <h2 className="mb-2 bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-3xl font-bold tracking-tight text-transparent sm:text-4xl">
-                  Video Library
-                </h2>
-                <p className="text-sm text-slate-400">
-                  {videoContent.length} tactical videos • Stream on demand
-                </p>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={prevVideo}
-                  className="rounded bg-blue-500/20 px-3 py-1.5 text-xs font-bold text-blue-400 transition hover:bg-blue-500/30"
-                >
-                  ←
-                </button>
-                <span className="text-slate-500 text-xs">
-                  {Math.floor(currentVideoIndex / itemsPerPage) + 1} /{" "}
-                  {Math.ceil(videoContent.length / itemsPerPage)}
-                </span>
-                <button
-                  onClick={nextVideo}
-                  className="rounded bg-orange-500/20 px-3 py-1.5 text-xs font-bold text-orange-400 transition hover:bg-orange-500/30"
-                >
-                  →
-                </button>
-              </div>
-            </div>
-
-            <div className="grid gap-4 md:grid-cols-3">
-              {currentVideos.map((video) => (
-                <div
-                  key={video.title}
-                  className="group rounded-lg border border-blue-500/30 bg-gradient-to-br from-blue-500/5 to-transparent p-4 transition hover:border-blue-500/50 hover:from-blue-500/10"
-                >
-                  <div className="mb-3">
-                    <div className="mb-2 inline-block rounded bg-blue-500/20 px-2 py-0.5 text-xs font-medium text-blue-400">
-                      {video.category}
-                    </div>
-                    <h3 className="text-lg font-bold text-white group-hover:text-blue-300">
-                      {video.title}
-                    </h3>
-                    <p className="mt-1 text-xs text-orange-400">
-                      {video.duration}
-                    </p>
-                  </div>
-
-                  <div className="aspect-video bg-gradient-to-br from-blue-900/30 to-orange-900/30 rounded border border-blue-500/20 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="text-3xl mb-1">▶</div>
-                      <p className="text-slate-600 text-xs">Play</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Visual Separator */}
-          <div className="flex items-center justify-center gap-4 py-8">
-            <div className="h-px w-full max-w-xs bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-50"></div>
-            <div className="flex gap-2">
-              <div className="h-2 w-2 rounded-full bg-orange-500"></div>
-              <div className="h-2 w-2 rounded-full bg-blue-500"></div>
-              <div className="h-2 w-2 rounded-full bg-orange-500"></div>
-            </div>
-            <div className="h-px w-full max-w-xs bg-gradient-to-r from-transparent via-orange-500 to-transparent opacity-50"></div>
-          </div>
-
-          {/* Podcast Section with 3-Column Layout */}
-          <section
-            id="podcast"
-            className="rounded-lg border-2 border-orange-500 bg-black/70 p-6 backdrop-blur shadow-[0_0_60px_rgba(249,115,22,0.3)]"
-          >
-            <div className="mb-4 flex items-baseline gap-4">
-              <span className="text-xs font-bold text-orange-500">PODCAST</span>
-              <div className="h-px flex-1 bg-gradient-to-r from-orange-500 to-transparent opacity-50"></div>
-            </div>
-            <div className="mb-6 flex items-end justify-between">
-              <div>
-                <h2 className="mb-2 bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-3xl font-bold tracking-tight text-transparent sm:text-4xl">
-                  The Momentum Mic
-                </h2>
-                <p className="text-sm text-slate-400">
-                  {podcastEpisodes.length} episodes • Weekly insights
-                </p>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={prevPodcast}
-                  className="rounded bg-blue-500/20 px-3 py-1.5 text-xs font-bold text-blue-400 transition hover:bg-blue-500/30"
-                >
-                  ←
-                </button>
-                <span className="text-slate-500 text-xs">
-                  {Math.floor(currentPodcastIndex / itemsPerPage) + 1} /{" "}
-                  {Math.ceil(podcastEpisodes.length / itemsPerPage)}
-                </span>
-                <button
-                  onClick={nextPodcast}
-                  className="rounded bg-orange-500/20 px-3 py-1.5 text-xs font-bold text-orange-400 transition hover:bg-orange-500/30"
-                >
-                  →
-                </button>
-              </div>
-            </div>
-
-            <div className="grid gap-4 md:grid-cols-3">
-              {currentPodcasts.map((episode) => (
-                <div
-                  key={episode.title}
-                  className="group rounded-lg border border-orange-500/30 bg-gradient-to-br from-orange-500/5 to-transparent p-4 transition hover:border-orange-500/50 hover:from-orange-500/10"
-                >
-                  <div className="mb-3">
-                    <div className="mb-2 inline-block rounded bg-orange-500/20 px-2 py-0.5 text-xs font-medium text-orange-400">
-                      {episode.guest}
-                    </div>
-                    <h3 className="text-lg font-bold text-white group-hover:text-orange-300">
-                      {episode.title}
-                    </h3>
-                    <p className="mt-1 text-xs text-blue-400">
-                      {episode.duration}
-                    </p>
-                  </div>
-
-                  <div className="aspect-video bg-gradient-to-br from-orange-900/30 to-blue-900/30 rounded border border-orange-500/20 flex items-center justify-center">
-                    <div className="text-center">
-                      <div className="text-3xl mb-1">🎙️</div>
-                      <p className="text-slate-600 text-xs">Listen</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        </main>
-
-        {/* Fixed Bottom Navigation */}
-        <nav className="fixed bottom-[3px] left-1/2 -translate-x-1/2 z-50 w-[calc(100%-24px)] max-w-4xl">
-          <div className="rounded-[18px] border-2 border-orange-500 bg-slate-700/40 backdrop-blur-xl shadow-lg">
-            <div className="px-4 py-2">
-              <div className="flex items-center justify-around gap-1">
-                {activeSection !== "home" && (
-                  <Link
-                    href="/linktree"
-                    className="group flex flex-col items-center gap-0.5 px-1.5 py-1.5 transition-all duration-300 hover:scale-110"
-                  >
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-orange-500 shadow-lg transition-transform group-hover:scale-105">
-                      <HomeIcon />
-                    </div>
-                    <span className="text-[10px] font-medium uppercase tracking-wider text-blue-400 transition-colors group-hover:text-orange-400">
-                      Home
-                    </span>
-                  </Link>
-                )}
-                {activeSection !== "meet-maureen" &&
-                  activeSection !== "approach" && (
-                    <a
-                      href="#meet-maureen"
-                      className="group flex flex-col items-center gap-0.5 px-1.5 py-1.5 transition-all duration-300 hover:scale-110"
-                    >
-                      <span className="text-lg">👤</span>
-                      <span className="text-[10px] font-medium uppercase tracking-wider text-blue-400 transition-colors group-hover:text-orange-400">
-                        About
-                      </span>
-                    </a>
-                  )}
-                {activeSection !== "services" && (
-                  <a
-                    href="#services"
-                    className="group flex flex-col items-center gap-0.5 px-1.5 py-1.5 transition-all duration-300 hover:scale-110"
-                  >
-                    <span className="text-lg">⚡</span>
-                    <span className="text-[10px] font-medium uppercase tracking-wider text-blue-400 transition-colors group-hover:text-orange-400">
-                      Services
-                    </span>
-                  </a>
-                )}
-                {activeSection !== "video" && (
-                  <a
-                    href="#video"
-                    className="group flex flex-col items-center gap-0.5 px-1.5 py-1.5 transition-all duration-300 hover:scale-110"
-                  >
-                    <span className="text-lg">▶️</span>
-                    <span className="text-[10px] font-medium uppercase tracking-wider text-blue-400 transition-colors group-hover:text-orange-400">
-                      Videos
-                    </span>
-                  </a>
-                )}
-                {activeSection !== "podcast" && (
-                  <a
-                    href="#podcast"
-                    className="group flex flex-col items-center gap-0.5 px-1.5 py-1.5 transition-all duration-300 hover:scale-110"
-                  >
-                    <span className="text-lg">🎙️</span>
-                    <span className="text-[10px] font-medium uppercase tracking-wider text-blue-400 transition-colors group-hover:text-orange-400">
-                      Podcast
-                    </span>
-                  </a>
-                )}
-
-                {/* Connect Button with Popup */}
-                {activeSection !== "connect" && (
-                  <div className="relative">
-                    <button
-                      onClick={() => setShowSocial(!showSocial)}
-                      className="group flex flex-col items-center gap-0.5 px-1.5 py-1.5 transition-all duration-300 hover:scale-110"
-                    >
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-orange-500 shadow-lg transition-transform group-hover:scale-105">
-                        <ShareIcon />
-                      </div>
-                      <span className="text-[10px] font-medium uppercase tracking-wider text-blue-400 transition-colors group-hover:text-orange-400">
-                        Connect
-                      </span>
-                    </button>
-
-                    {showSocial && (
-                      <div className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 w-64">
-                        <div className="rounded-lg border-2 border-orange-500/50 bg-black/95 backdrop-blur-xl p-4 shadow-[0_0_30px_rgba(249,115,22,0.4)]">
-                          {/* Contact Icons - Stand Out */}
-                          <div className="mb-4 pb-4 border-b border-orange-500/30">
-                            <p className="text-xs uppercase tracking-wider text-orange-400 mb-3 font-bold">
-                              Get In Touch
-                            </p>
-                            <div className="flex gap-2">
-                              <a
-                                href="tel:+1234567890"
-                                className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-3 text-sm font-bold text-white transition hover:scale-105 shadow-[0_0_15px_rgba(59,130,246,0.5)]"
-                              >
-                                <span className="text-lg">📞</span>
-                                <span>Call</span>
-                              </a>
-                              <a
-                                href="mailto:contact@example.com"
-                                className="flex-1 flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 px-4 py-3 text-sm font-bold text-white transition hover:scale-105 shadow-[0_0_15px_rgba(249,115,22,0.5)]"
-                              >
-                                <span className="text-lg">✉️</span>
-                                <span>Email</span>
-                              </a>
-                            </div>
-                          </div>
-
-                          {/* Social Media Icons */}
-                          <div>
-                            <p className="text-xs uppercase tracking-wider text-blue-400 mb-2 font-bold">
-                              Follow Us
-                            </p>
-                            <div className="grid grid-cols-2 gap-2">
-                              {socialLinks.map(({ name, icon }) => (
-                                <a
-                                  key={name}
-                                  href={"javascript:void(0)"}
-                                  role="button"
-                                  aria-label={`${name} (not linked)`}
-                                  onClick={(e) => e.preventDefault()}
-                                  className="flex items-center gap-2 rounded-lg border border-blue-500/30 bg-gradient-to-br from-blue-500/10 to-transparent px-3 py-2 text-xs font-medium text-blue-300 transition hover:border-orange-500/50 hover:from-orange-500/10 hover:text-orange-400"
-                                >
-                                  <span className="text-base">{icon}</span>
-                                  <span>{name}</span>
-                                </a>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Bookmark Button */}
-                {activeSection !== "save" && (
-                  <button
-                    onClick={() => {
-                      // Add to bookmarks functionality
-                      if (window.sidebar && window.sidebar.addPanel) {
-                        window.sidebar.addPanel(
-                          document.title,
-                          window.location.href,
-                          ""
-                        );
-                      } else if (
-                        window.external &&
-                        "AddFavorite" in window.external
-                      ) {
-                        window.external.AddFavorite(
-                          window.location.href,
-                          document.title
-                        );
-                      } else {
-                        alert(
-                          "Press " +
-                            (navigator.userAgent.toLowerCase().indexOf("mac") !=
-                            -1
-                              ? "Cmd"
-                              : "Ctrl") +
-                            "+D to bookmark this page."
-                        );
-                      }
-                    }}
-                    className="group flex flex-col items-center gap-0.5 px-1.5 py-1.5 transition-all duration-300 hover:scale-110"
-                  >
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-orange-500 shadow-lg transition-transform group-hover:scale-105">
-                      <BookmarkIcon />
-                    </div>
-                    <span className="text-[10px] font-medium uppercase tracking-wider text-blue-400 transition-colors group-hover:text-orange-400">
-                      Save
-                    </span>
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        </nav>
-
-        <footer
-          id="footer"
-          className="rounded-lg border-2 border-transparent bg-gradient-to-r from-blue-500 via-orange-500 to-blue-500 p-[2px] animate-[gradient_3s_ease_infinite] bg-[length:200%_200%] mb-20"
+    <div className="min-h-screen bg-slate-900 text-slate-100">
+      <div className="mx-auto flex max-w-6xl flex-col gap-20 px-6 pb-32 pt-16 sm:px-8 lg:px-10">
+        <header
+          id="hero"
+          className="rounded-3xl border border-blue-500/40 bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900/30 p-8 shadow-[0_30px_80px_rgba(15,76,129,0.35)] backdrop-blur"
         >
-          <div className="rounded-lg bg-black/90 p-8 backdrop-blur">
-            {/* Before & After Section */}
-            <div className="mb-8">
-              <div className="mb-6 text-center">
-                <h3 className="mb-2 text-2xl font-bold bg-gradient-to-r from-blue-400 via-orange-400 to-blue-400 bg-clip-text text-transparent">
-                  The Transformation
-                </h3>
-              </div>
-
-              <div className="grid gap-6 md:grid-cols-2 max-w-5xl mx-auto">
-                {/* BEFORE */}
-                <div className="rounded-lg bg-gradient-to-br from-slate-700 to-slate-800 p-6 border border-slate-600">
-                  <div className="text-center mb-4">
-                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-yellow-400 mb-3">
-                      <span className="text-4xl">😞</span>
-                    </div>
-                    <h4 className="text-xl font-bold text-white uppercase tracking-wider">
-                      Before
-                    </h4>
-                  </div>
-                  <ul className="space-y-3 text-sm text-slate-300">
-                    <li className="flex items-start gap-2">
-                      <span className="text-orange-400 mt-1">•</span>
-                      <span>
-                        You have to hide who you are around the people closest
-                        to you, constantly walking on egg shells.
-                      </span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-orange-400 mt-1">•</span>
-                      <span>
-                        You're dealing with negativity and feeling uncomfortable
-                        in your own skin.
-                      </span>
-                    </li>
-                  </ul>
-                </div>
-
-                {/* NOW / AFTER */}
-                <div className="rounded-lg bg-gradient-to-br from-slate-700 to-slate-800 p-6 border border-blue-500/50 shadow-[0_0_30px_rgba(59,130,246,0.3)]">
-                  <div className="text-center mb-4">
-                    <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-yellow-400 mb-3">
-                      <span className="text-4xl">😊</span>
-                    </div>
-                    <h4 className="text-xl font-bold text-white uppercase tracking-wider">
-                      Now
-                    </h4>
-                  </div>
-                  <ul className="space-y-3 text-sm text-slate-300">
-                    <li className="flex items-start gap-2">
-                      <span className="text-blue-400 mt-1">•</span>
-                      <span>You can now be yourself</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-blue-400 mt-1">•</span>
-                      <span>
-                        You are spreading acceptance and positivity in our
-                        environment that creates a ripple effect on the whole
-                        world.
-                      </span>
-                    </li>
-                  </ul>
-                </div>
+          <div className="flex flex-col gap-10 lg:flex-row">
+            <div className="flex-1 space-y-6">
+              <span className="inline-flex items-center gap-2 rounded-full border border-blue-500/40 bg-blue-500/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-blue-200">
+                Growth. Healing. Momentum.
+              </span>
+              <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
+                The therapy and coaching you need to feel like yourself again.
+              </h1>
+              <p className="text-lg text-slate-300">
+                It is hard enough to move through life feeling alone with your
+                worries. Maureen Tamillow, LCPC, walks alongside you so you gain
+                clarity, confidence, and sustainable change.
+              </p>
+              <ul className="grid gap-2 text-sm text-blue-100/90 sm:text-base">
+                {heroHighlights.map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <span className="mt-1 h-2 w-2 rounded-full bg-orange-400"></span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="flex flex-wrap gap-3 pt-2 text-sm text-blue-100/80">
+                <button
+                  onClick={() => scrollToSection("contact")}
+                  className="rounded-full bg-gradient-to-r from-blue-500 via-orange-500 to-pink-500 px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-white shadow-[0_18px_38px_rgba(59,130,246,0.45)] transition-transform hover:scale-105"
+                >
+                  Schedule a Discovery Call
+                </button>
+                <a
+                  href={contactInfo.vitaeUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-full border border-blue-400/60 px-6 py-3 text-sm font-semibold uppercase tracking-[0.3em] text-blue-200 transition hover:border-orange-400/70 hover:text-orange-200"
+                >
+                  View Curriculum Vitae
+                </a>
               </div>
             </div>
-
-            {/* Subscription Section */}
-            <div className="mb-6 text-center border-t border-slate-800 pt-8">
-              <h3 className="mb-2 text-3xl font-bold bg-gradient-to-r from-blue-400 via-orange-400 to-blue-400 bg-clip-text text-transparent animate-[gradient_3s_ease_infinite] bg-[length:200%_200%]">
-                Stay Connected
-              </h3>
-              <p className="text-sm text-slate-400">
-                Get exclusive insights, new videos, and podcast episodes
-                delivered to your inbox
+            <div className="lg:w-72">
+              <div className="overflow-hidden rounded-[32px] border border-orange-400/30 bg-gradient-to-br from-orange-500/20 via-pink-500/10 to-blue-500/20 shadow-[0_25px_50px_rgba(249,115,22,0.35)]">
+                <img
+                  src="/images/maureen.webp"
+                  alt="Maureen Tamillow with an orange background"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+              <p className="mt-4 text-sm text-slate-400">
+                “Therapy is a partnership. You deserve a guide who holds hope,
+                offers structure, and celebrates your wins.”
               </p>
             </div>
+          </div>
+        </header>
 
-            <form className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center">
-              <input
-                type="email"
-                placeholder="Enter your email address"
-                className="flex-1 max-w-md rounded-lg border border-blue-500/30 bg-black/50 px-4 py-3 text-white placeholder:text-slate-500 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"
-              />
-              <button
-                type="submit"
-                className="relative overflow-hidden rounded-lg bg-gradient-to-r from-blue-500 via-orange-500 to-blue-500 px-8 py-3 text-sm font-bold uppercase tracking-wider text-white transition hover:scale-105 animate-[gradient_3s_ease_infinite] bg-[length:200%_200%] shadow-[0_0_20px_rgba(249,115,22,0.5)]"
+        <section
+          id="about"
+          className="rounded-3xl border border-blue-500/30 bg-slate-900/80 p-8 shadow-[0_18px_60px_rgba(15,76,129,0.35)] backdrop-blur"
+        >
+          <div className="grid gap-8 md:grid-cols-[1.2fr_0.8fr] md:items-start">
+            <div className="space-y-5">
+              <h2 className="text-3xl font-bold text-white sm:text-4xl">
+                Meet Maureen Tamillow, LCPC
+              </h2>
+              <p className="text-slate-300">
+                Maureen is dedicated to growth and healing across a wide range
+                of emotional and behavioral concerns. Her exacting approach
+                addresses developmental crises, psychodynamic counseling,
+                parental support, couples work, and identity formation.
+              </p>
+              <p className="text-slate-300">
+                With more than three decades of experience, Maureen has
+                witnessed how chronic health conditions intersect with mental
+                wellness. Practicum work at the Rehabilitation Institute of
+                Chicago and school-based collaborations inform her mind-body
+                perspective and the practical way she equips families to thrive.
+              </p>
+              <a
+                href={contactInfo.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-blue-300 transition hover:text-orange-300"
               >
-                Subscribe Now
-              </button>
-            </form>
-
-            <div className="flex flex-col items-center gap-4 border-t border-slate-800 pt-6 sm:flex-row sm:justify-between">
-              <p className="text-xs text-slate-500">
-                © {new Date().getFullYear()} Maureen Tamillow Therapy • All
-                Rights Reserved
+                Connect on LinkedIn
+                <span aria-hidden>→</span>
+              </a>
+            </div>
+            <div className="space-y-4 rounded-2xl border border-orange-400/20 bg-orange-500/10 p-6 text-sm text-orange-100/90">
+              <h3 className="text-base font-semibold uppercase tracking-[0.25em] text-orange-200">
+                What Clients Notice
+              </h3>
+              <p>“Maureen goes beyond a typical therapy session.”</p>
+              <p>
+                “She blends clinical expertise with creative problem-solving.”
               </p>
-              <div className="flex items-center gap-4">
+              <p>
+                “She remembers the details, advocates fiercely, and makes sure
+                next steps are clear.”
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="video"
+          className="rounded-3xl border border-blue-500/30 bg-gradient-to-br from-slate-900 via-blue-900/20 to-indigo-900/30 p-8 shadow-[0_20px_60px_rgba(15,76,129,0.35)]"
+        >
+          <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h2 className="text-3xl font-bold text-white sm:text-4xl">
+                Theory of Mental Health
+              </h2>
+              <p className="mt-3 max-w-3xl text-slate-300">
+                Explore the foundational theories and evidence-based approaches
+                that inform therapeutic practice. These educational resources
+                provide insight into the clinical frameworks used in counseling
+                and psychology.
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => handleVideoNav("prev")}
+                className="rounded-full border border-blue-500/40 px-3 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-blue-200 transition hover:border-orange-400/70 hover:text-orange-200"
+                aria-label="Previous videos"
+              >
+                ←
+              </button>
+              <span className="text-xs font-semibold uppercase tracking-[0.3em] text-blue-200/70">
+                {videoPage + 1} / {totalVideoPages}
+              </span>
+              <button
+                onClick={() => handleVideoNav("next")}
+                className="rounded-full border border-blue-500/40 px-3 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-blue-200 transition hover:border-orange-400/70 hover:text-orange-200"
+                aria-label="Next videos"
+              >
+                →
+              </button>
+            </div>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            {currentVideos.map((video) => (
+              <div
+                key={video.title}
+                className="group rounded-2xl border border-blue-500/30 bg-slate-900/70 p-6 transition hover:border-orange-500/40 hover:shadow-[0_20px_45px_rgba(249,115,22,0.25)]"
+              >
+                <div className="mb-4 flex items-center justify-between text-xs font-semibold uppercase tracking-[0.3em] text-blue-200/70">
+                  <span>{video.category}</span>
+                  <span>{video.duration}</span>
+                </div>
+                <h3 className="text-lg font-semibold text-white group-hover:text-orange-200">
+                  {video.title}
+                </h3>
+                <div className="mt-6 flex h-36 items-center justify-center rounded-xl border border-blue-500/20 bg-gradient-to-br from-blue-900/30 to-orange-900/30">
+                  <div className="text-center text-3xl text-blue-200/80 group-hover:text-orange-300">
+                    ▶
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section
+          id="contact"
+          className="rounded-3xl border border-blue-500/30 bg-gradient-to-br from-slate-900 via-blue-900/10 to-slate-900 p-6 sm:p-8 shadow-[0_18px_60px_rgba(59,130,246,0.3)]"
+        >
+          <div className="space-y-4">
+            <h2 className="text-2xl font-bold text-white sm:text-3xl md:text-4xl">
+              Start your growth today
+            </h2>
+            <p className="text-slate-300">
+              There is a time to grow and change. Maureen will be with you every
+              step of the way, helping you or your loved one feel brand new.
+            </p>
+            <div className="space-y-3 text-sm text-blue-100/85">
+              <div className="flex items-center gap-3 rounded-xl border border-blue-500/30 bg-slate-900/70 px-4 py-3">
+                <span className="text-lg">📞</span>
                 <a
-                  href="#meet-maureen"
-                  className="text-xs text-blue-400 transition hover:text-orange-400"
+                  href={`tel:${contactInfo.phone.replace(/[^0-9]/g, "")}`}
+                  className="font-semibold text-blue-200/90 transition hover:text-orange-200"
                 >
-                  About
+                  {contactInfo.phone}
                 </a>
-                <span className="text-slate-700">•</span>
+              </div>
+              <div className="flex items-center gap-3 rounded-xl border border-blue-500/30 bg-slate-900/70 px-4 py-3">
+                <span className="text-lg">✉️</span>
                 <a
-                  href="#video"
-                  className="text-xs text-blue-400 transition hover:text-orange-400"
+                  href={`mailto:${contactInfo.email}`}
+                  className="font-semibold text-blue-200/90 transition hover:text-orange-200 break-all"
                 >
-                  Videos
+                  {contactInfo.email}
                 </a>
-                <span className="text-slate-700">•</span>
+              </div>
+              <div className="flex items-center gap-3 rounded-xl border border-blue-500/30 bg-slate-900/70 px-4 py-3">
+                <span className="text-lg">📍</span>
                 <a
-                  href="#podcast"
-                  className="text-xs text-blue-400 transition hover:text-orange-400"
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                    contactInfo.address
+                  )}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-semibold text-blue-200/90 transition hover:text-orange-200"
                 >
-                  Podcast
+                  {contactInfo.address}
                 </a>
               </div>
             </div>
           </div>
-        </footer>
+        </section>
+
+        <section
+          id="transformation"
+          className="rounded-3xl border border-blue-500/40 bg-slate-900/85 p-8 shadow-[0_18px_60px_rgba(249,115,22,0.25)]"
+        >
+          <div className="mb-8 max-w-3xl space-y-3">
+            <h2 className="text-3xl font-bold text-white sm:text-4xl">
+              Your journey with therapy
+            </h2>
+            <p className="text-slate-300">
+              Professional counseling provides a structured path toward healing
+              and growth. Here's how therapy with Maureen can support your
+              mental health journey.
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="rounded-2xl border border-slate-700 bg-slate-800/70 p-6">
+              <div className="mb-4 flex items-center gap-3">
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-yellow-400 text-3xl">
+                  😞
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold uppercase tracking-[0.3em] text-slate-200">
+                    Before
+                  </h3>
+                  <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
+                    How it feels walking in
+                  </p>
+                </div>
+              </div>
+              <ul className="space-y-3 text-sm text-slate-300">
+                {transformationBefore.map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <span className="mt-1 text-orange-400">•</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="rounded-2xl border border-blue-500/40 bg-gradient-to-br from-blue-500/20 via-blue-500/10 to-slate-900 p-6 shadow-[0_0_35px_rgba(59,130,246,0.35)]">
+              <div className="mb-4 flex items-center gap-3">
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-yellow-400 text-3xl">
+                  😊
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold uppercase tracking-[0.3em] text-white">
+                    After
+                  </h3>
+                  <p className="text-xs uppercase tracking-[0.3em] text-blue-100/70">
+                    What clients experience
+                  </p>
+                </div>
+              </div>
+              <ul className="space-y-3 text-sm text-blue-100/85">
+                {transformationAfter.map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <span className="mt-1 text-blue-300">•</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
       </div>
+
+      <nav className="pointer-events-none fixed bottom-3 left-1/2 z-50 flex w-full max-w-md -translate-x-1/2 justify-center px-3 md:max-w-5xl md:bottom-[18px] md:px-4">
+        <div className="pointer-events-auto w-full md:w-auto">
+          {/* Navigation Menu - shows when menu button is clicked */}
+          {showMenu && (
+            <div className="mb-3 rounded-[32px] border border-orange-400/30 bg-gradient-to-br from-blue-500/30 via-pink-500/30 to-orange-500/30 p-4 shadow-[0_20px_60px_rgba(249,115,22,0.4)] backdrop-blur-xl">
+              <div className="grid grid-cols-2 gap-2 md:grid-cols-3">
+                {navLinks.map(({ label, target }) => {
+                  const isActive = activeSection === target;
+                  return (
+                    <button
+                      key={label}
+                      onClick={() => scrollToSection(target)}
+                      className={`rounded-2xl border-2 px-4 py-3 text-[11px] font-bold uppercase tracking-[0.2em] transition-all duration-200 md:text-[10px] ${
+                        isActive
+                          ? "border-white/80 bg-white/20 text-white shadow-[0_0_20px_rgba(255,255,255,0.3)]"
+                          : "border-white/30 bg-white/5 text-white/80 hover:border-white/50 hover:bg-white/10"
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Main Navigation Bar */}
+          <div className="rounded-[32px] border border-orange-400/30 bg-gradient-to-br from-blue-500/30 via-pink-500/30 to-orange-500/30 p-4 shadow-[0_20px_60px_rgba(249,115,22,0.4)] backdrop-blur-xl md:rounded-full">
+            {/* Mobile Layout */}
+            <div className="flex items-center justify-between gap-3 md:hidden">
+              {/* Center - Menu Button */}
+              <button
+                onClick={() => setShowMenu((prev) => !prev)}
+                className="flex h-14 w-14 items-center justify-center rounded-[20px] border-2 border-white/20 bg-white/5 text-white transition-all hover:border-white/40 hover:bg-white/10"
+                aria-label="Toggle menu"
+              >
+                <MenuIcon />
+              </button>
+
+              {/* Right Side - Bookmark, Share & Phone Buttons */}
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={handleBookmark}
+                  className="flex h-14 w-14 items-center justify-center rounded-[20px] bg-gradient-to-br from-purple-500 to-indigo-600 text-white shadow-[0_10px_30px_rgba(139,92,246,0.5)] transition-transform hover:scale-105"
+                  aria-label="Bookmark this page"
+                >
+                  <BookmarkIcon />
+                </button>
+                <button
+                  onClick={handleShare}
+                  className="flex h-14 w-14 items-center justify-center rounded-[20px] bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-[0_10px_30px_rgba(59,130,246,0.5)] transition-transform hover:scale-105"
+                  aria-label="Share this page"
+                >
+                  <ShareIcon />
+                </button>
+                <a
+                  href={`tel:${contactInfo.phone.replace(/[^0-9]/g, "")}`}
+                  className="flex h-14 w-14 items-center justify-center rounded-[20px] bg-gradient-to-br from-orange-500 to-pink-600 text-white shadow-[0_10px_30px_rgba(236,72,153,0.5)] transition-transform hover:scale-105"
+                  aria-label="Call Maureen"
+                >
+                  <span className="text-xl">📞</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Desktop Layout */}
+            <div className="hidden items-center justify-between gap-4 md:flex">
+              {/* Left - Logo */}
+              <div className="flex items-center gap-2 rounded-2xl bg-white/10 px-4 py-2">
+                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-black/70 text-base font-bold tracking-[0.2em] text-white shadow-[0_4px_12px_rgba(59,130,246,0.35)]">
+                  MT
+                </div>
+                <span className="text-[11px] font-semibold uppercase tracking-[0.3em] text-white">
+                  Tamillow
+                </span>
+              </div>
+
+              {/* Center - Navigation Buttons */}
+              <div className="flex items-center gap-2">
+                {navLinks.map(({ label, target }) => {
+                  const isActive = activeSection === target;
+                  return (
+                    <button
+                      key={label}
+                      onClick={() => scrollToSection(target)}
+                      className={`rounded-2xl border-2 px-5 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-200 ${
+                        isActive
+                          ? "border-white/80 bg-white/20 text-white shadow-[0_0_20px_rgba(255,255,255,0.3)]"
+                          : "border-white/30 bg-white/5 text-white/80 hover:border-white/50 hover:bg-white/10"
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Right - Share & Phone Buttons */}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleShare}
+                  className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-400 to-pink-500 text-white shadow-[0_10px_30px_rgba(249,115,22,0.5)] transition-transform hover:scale-105"
+                  aria-label="Share this page"
+                >
+                  <ShareIcon />
+                </button>
+                <a
+                  href={`tel:${contactInfo.phone.replace(/[^0-9]/g, "")}`}
+                  className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 to-pink-600 text-white shadow-[0_10px_30px_rgba(236,72,153,0.5)] transition-transform hover:scale-105"
+                  aria-label="Call Maureen"
+                >
+                  <span className="text-xl">📞</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
     </div>
   );
 }
